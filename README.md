@@ -1,9 +1,9 @@
 # Writing Organisation System 
 
 ## Features 
--Keeps track of clients
--Keeps track of work to be done
--Flexible input
+- Keeps track of clients
+- Keeps track of work to be done
+- Accounts for Patrons if you have them!
 
 ## Installation 
 
@@ -18,4 +18,4 @@ pip install -r requirements.txt
 ``` 
 
 And you're set to go! 
-Delete ```Clients.sqlite``` to remove dummy data. 
+Delete ```Clients.db``` to remove dummy data. 
