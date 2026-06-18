@@ -19,17 +19,11 @@ def home():
 
     Patron_Clients = sqlquery("SELECT * FROM Clients WHERE Patron != 0")
 
-    with open("lottery.json", "r") as f:
-        data = json.load(f)
-    if data["date"] == str(datetime.date.today()):
-        result = data["result"]
-    else: 
-        result = "Roll for it!"
     for i in Patron_Clients:
         Viewing_Client = Clients(i[1], i[2], i[3], i[4], i[5], i[6])
         Viewing_Client.incremental(Viewing_Client.renewal(), i[0])
 
-    return render_template("home.html", Comms = Comms_List, Progress = In_Progress[0][0], UnStart = Not_Started[0][0], Hold = On_Hold[0][0], chosen = result)
+    return render_template("home.html", Comms = Comms_List, Progress = In_Progress[0][0], UnStart = Not_Started[0][0], Hold = On_Hold[0][0])
 
 
 @app.route('/create', methods=['GET', 'POST'])
