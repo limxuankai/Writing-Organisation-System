@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Client Database{% endblock %}
+
+{% block content %}
+
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-body">
+            <!-- Title -->
+            <h2 class="card-title text-center mb-4 fw-bold">{{ client[0][1] }}</h2>
+
+            <!-- Details Grid -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Total Words Commissioned:</strong> {{ client[0][2] }}K
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Patron Pledged per month:</strong> ${{ client[0][3] }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Current Words in Word Bank: </strong> {{ client[0][4] }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Payrate per 1K words:</strong> ${{ Payrate }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Counter:</strong> {{ client[0][6] }}
+                    </div>
+                </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2">
+                <a href="/update/{{ client[0][0]}}" class="btn btn-warning">
+                    <i class="bi bi-pencil-square"></i> Update
+                </a>
+
+                           <form action="{{url_for('delete', id=client[0][0])}}" method="POST">
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{ client[0][0]}}">
+ <i class="bi bi-trash"></i>
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal_{{ client[0][0]}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Are you sure you want to delete?
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <input type="submit" value="Delete" class="btn btn-danger">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+          </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

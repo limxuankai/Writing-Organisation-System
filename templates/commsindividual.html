@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}Individual Comms{% endblock %}
+
+{% block content %}
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-body">
+            <!-- Title -->
+            <h2 class="card-title text-center mb-4 fw-bold">Commission Name: {{ Comms[0][1] }}</h2>
+
+            <!-- Details Grid -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Story:</strong> {{ Comms[0][1] }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Word Count:</strong> {{ Comms[0][2] }}K
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Commissioned By:</strong> {{ Comms[0][3] }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Status:</strong> {{ Comms[0][4] }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <h5 class="fw-bold mb-2">Progress {{ Comms[0][5] }}/{{ Comms[0][2] }}</h5>
+            <div class="progress mb-3" style="height: 25px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ Progress }}%" aria-valuenow=" {{ Progress }}" aria-valuemin="0" aria-valuemax="100">
+                </div>
+            </div>
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Total Payout:</strong> ${{ Pay }} USD
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded border">
+                        <strong>Next Checkpoint:</strong> {{ Checkpoint }}K words
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-2">
+                <a href="/updatecomms/{{ Comms[0][0]}}" class="btn btn-warning">
+                    <i class="bi bi-pencil-square"></i> Update
+                </a>
+
+                
+
+<form action="{{ url_for('progress', id= Comms[0][0]) }}" method="POST">
+    <!-- Button to Open the Modal -->
+    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#progressModal_{{ Comms[0][0] }}">
+        <i class="bi bi-plus-circle"></i> Update Progress
+    </button>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="progressModal_{{ Comms[0][0] }}" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Progress</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <label for="progress_{{ Comms[0][0] }}" class="form-label">New Progress Value:</label>
+                    <input type="number" 
+                           class="form-control" 
+                           name="progress" 
+                           id="progress_{{ Comms[0][0] }}" 
+                           min="0" 
+                           max="{{ Comms[0][2] }}" 
+                           value="{{ Comms[0][5] }}" 
+                           required>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <input type="submit" value="Save" class="btn btn-success">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</form>
+                           <form action="{{url_for('comms_delete', id=Comms[0][0])}}" method="POST">
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{ Comms[0][0]}}">
+ <i class="bi bi-trash"></i>
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal_{{ Comms[0][0]}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Are you sure you want to delete?
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <input type="submit" value="Delete" class="btn btn-danger">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+          </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

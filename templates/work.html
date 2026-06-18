@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div id="change" style="margin-top: 20px; margin-left: 20px;"></div>
+
+<h1 class="text-center"> Commission Queue System </h1>
+
+</head>
+<body>
+{% if Progress + UnStart == 0 %}
+<h3 class = "text-center" style="margin-top: 50px;"> No work to do! Just write whatever you like lolol </h2>
+{% endif %}
+{% set ns = namespace(progress_count=0) %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="kanban-column">
+                <div class="kanban-title">In progress {{ Progress }}</div>
+                {% for comms in Comms %}
+                    {% if comms[4] == "In Progress" %}
+                        <div class="kanban-card in-progress">
+                            {{ comms[1] }} 
+                            <br>
+                            <i>{{ comms[3] }} [{{ comms[5] }}/{{ comms[2] }}]</i>
+                            {% set ns.progress_count = ns.progress_count + comms[2] - comms[5] %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="kanban-column">
+                <div class="kanban-title">Not started {{ UnStart }}</div>
+                {% for comms in Comms %}
+                    {% if comms[4] == "Not Started" %}
+                        <div class="kanban-card not-started">
+                            {{ comms[1] }} 
+                            <br>
+                            <i>[0/{{ comms[2] }}]</i>
+                            {% set ns.progress_count = ns.progress_count + comms[2] %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 class="text-center"> Total Words Left to Write: {{ ns.progress_count }}K</h2>
+<h2 class="text-center"> Work To Do: </h2>
+{% for ticket in chosen %}
+<h4 class="text-center">
+<li>{{ ticket }}</li>
+</h4>
+{% endfor %}
+{{ endblock }}
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Comms Creation{% endblock %}
+
+{% block content %}
+{% from "includes/_formHelper.html" import render_field %}
+
+<h1 class="display-4">Commission Update</h1>
+
+<form method="POST" action="">
+  <div class="form-group">
+    {{ render_field(form.Story, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.Name, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.Word_Count, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.Progress, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.Status, class="form-control") }}
+  </div>
+  <br>
+  <input type="submit" value="Submit" class="btn btn-primary"/>
+</form>
+{% endblock %}

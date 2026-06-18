@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Commission Queue{% endblock %}
+
+{% block content %}
+<style>
+    th {
+      user-select: none;
+      cursor: pointer;
+    }
+
+    i{
+      margin-left: 5px;
+    }
+  </style>
+<h1 class="display-4">Commission Queue</h1>
+<div>
+  <table class="table table-striped" id="clientTable">
+    <thead>
+      <tr>
+        <th><b>Story Name</b></th>
+        <th onclick="sortTable(this, 1)">Word Count (in K)<i class="fa-solid fa-sort-up"></i></th>
+        <th>Client</i></th>
+        <th>Status</th>
+        <th onclick="sortTable(this, 4)">Progress<i class="fa-solid fa-sort-up"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for comms in Comms %}
+     <tr>
+        {% for i in range(1, 6) %}
+        <td> {{ comms[i] }}</td>
+        {% endfor %}
+        <td><a href="/viewcomms/{{ comms[0]}}" class="btn btn-success">View</a></td>
+        <td>
+          <form action="{{url_for('comms_delete', id=comms[0])}}" method="POST">
+<!--            <input type="submit" value="Delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?');">-->
+<!-- Button to Open the Modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{ comms[0]}}">
+  Delete
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="myModal_{{ comms[0]}}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Delete Confirmation</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Are you sure you want to delete?
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <input type="submit" value="Delete" class="btn btn-danger">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+          </form>
+        </td>
+     </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{{ script }}
+<script>
+   const sortState = {};
+
+  function sortTable(th, colIndex) {
+    const table = document.getElementById("clientTable");
+    const tbody = table.tBodies[0];
+    const rows = Array.from(tbody.rows);
+    const ascending = !sortState[colIndex]; // toggle direction
+    sortState[colIndex] = ascending;
+
+    // Sort rows numerically
+    rows.sort((a, b) => {
+      let valA = parseFloat(a.cells[colIndex].innerText.replace(/[^0-9.\-]/g, ""));
+      let valB = parseFloat(b.cells[colIndex].innerText.replace(/[^0-9.\-]/g, ""));
+
+      valA = isNaN(valA) ? 0 : valA;
+      valB = isNaN(valB) ? 0 : valB;
+
+      return ascending ? valA - valB : valB - valA;
+    });
+
+    // Re-append rows in sorted order
+    rows.forEach(row => tbody.appendChild(row));
+
+    // Reset all icons
+    document.querySelectorAll('th i[data-column]').forEach(icon => {
+      icon.className = 'fa-solid fa-sort';
+    });
+
+    // Set icon for this column
+    const icon = th.querySelector('i');
+    icon.className = ascending ? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down';
+  }
+</script>
+{{ endblock }}
+{% endblock %}
